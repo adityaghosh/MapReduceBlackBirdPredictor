@@ -24,11 +24,12 @@ object App {
     val predata =  sc.textFile(input + "/")
                             .map(line => DataLineParser.get(line))
                             .filter(line => line.length() != 0)
-    predata.saveAsTextFile(output)
                             
+    predata.saveAsTextFile(output)
+    /*
     // $example on$
     // Load training data in LIBSVM format.
-    val data = MLUtils.loadLibSVMFile(sc, "data/mllib/sample_libsvm_data.txt")
+    val data = MLUtils.loadLibSVMFile(sc, output)
 
     // Split data into training (60%) and test (40%).
     val splits = data.randomSplit(Array(0.6, 0.4), seed = 11L)
@@ -58,6 +59,7 @@ object App {
     model.save(sc, "target/tmp/scalaSVMWithSGDModel")
     val sameModel = SVMModel.load(sc, "target/tmp/scalaSVMWithSGDModel")
     // $example off$
+    */
 
     sc.stop()
   }
