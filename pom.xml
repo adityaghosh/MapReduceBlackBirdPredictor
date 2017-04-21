@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com</groupId>
-  <artifactId>BirdPredictor</artifactId>
+  <artifactId>birdpredictor</artifactId>
   <version>1.0.0</version>
   <name>${project.artifactId}</name>
   <description>My wonderfull scala app</description>
@@ -14,8 +14,7 @@
     </license>
   </licenses>
 
-
-  <properties>
+ <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <encoding>UTF-8</encoding>
@@ -24,9 +23,9 @@
     <spark.version>2.0.2</spark.version>
 	<hadoop.version>2.7.3</hadoop.version>
   </properties>
-
+  
   <dependencies>
-  	<dependency>
+    <dependency>
 	    <groupId>org.jsoup</groupId>
 	    <artifactId>jsoup</artifactId>
 	    <version>1.9.2</version>
@@ -79,7 +78,7 @@
 		<artifactId>spark-core_${scala.compat.version}</artifactId>
 		<version>${spark.version}</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-mllib_2.10 -->
+    	<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-mllib_2.10 -->
 	<dependency>
 	    <groupId>org.apache.spark</groupId>
 	    <artifactId>spark-mllib_2.10</artifactId>
@@ -87,7 +86,7 @@
 	</dependency>
   </dependencies>
 
-  <build>
+   <build>
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
     <plugins>
@@ -125,7 +124,7 @@
 	            <transformers>
 	                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 	                    <manifestEntries>
-	                        <Main-Class>com.BirdPredictor.SVMPredict</Main-Class>
+	                        <Main-Class>com.birdpredictor.App</Main-Class>
 	                        <Build-Number>1.0.0</Build-Number>
 	                    </manifestEntries>
 	                </transformer>

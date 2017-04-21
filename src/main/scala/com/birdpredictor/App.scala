@@ -1,26 +1,31 @@
+package com.birdpredictor
 
-package org.apache.spark.examples.mllib
+import org.apache.spark.SparkConf
+import org.apache.spark.storage.StorageLevel
+import org.apache.spark.SparkContext
+import org.apache.spark.SparkContext._
+import org.apache.spark.mllib;
+import org.apache.spark.ml;
+import org.apache.spark.mllib.util.MLUtils;
+import org.apache.spark.mllib.classification.SVMWithSGD;
+import org.apache.spark.mllib.classification.SVMModel;
+import org.apache.spark.mllib.evaluation.BinaryClassificationMetrics;
+import org.apache.spark.SparkConf
 
-import com.BirdPredictor.DataLineParser
-import org.apache.spark.mllib.classification.{SVMModel, SVMWithSGD}
-import org.apache.spark.mllib.evaluation.BinaryClassificationMetrics
-import org.apache.spark.mllib.util.MLUtils
-
-import org.apache.spark.{SparkConf, SparkContext}
-
-object SVMPredict extends App{
-  def main(args: Array[String]): Unit = {
+object App {
+  def main(args: Array[String]) {
     
     var input = args(0)
     var output = args(1)
     
-    val conf = new SparkConf().setAppName("SVMWithSGDExample")
-    val sc = new SparkContext(conf)
+    //val conf = new SparkConf().setAppName("SVMWithSGDExample")
+    val sc = new SparkContext("local[*]","BirdPredictor",new SparkConf())
 
     val predata =  sc.textFile(input + "/")
                             .map(line => DataLineParser.get(line))
                             .filter(line => line.length() != 0)
-    
+    predata.saveAsTextFile(output)
+                            
     // $example on$
     // Load training data in LIBSVM format.
     val data = MLUtils.loadLibSVMFile(sc, "data/mllib/sample_libsvm_data.txt")
