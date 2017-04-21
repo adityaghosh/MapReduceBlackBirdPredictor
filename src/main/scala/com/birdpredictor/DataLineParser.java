@@ -12,7 +12,9 @@ public class DataLineParser {
 	private static long county_counter = 0;
 	
 	public static String get(String line){
+		//int[] indexes = {1,4,5,7,9,10,11,12,13,14,16,958,959,960,961,962,963,966,967};
 		int[] indexes = {1,9,10,11,12,13,14,960,961,963,966,967};
+		
 		ArrayList<String> result = new ArrayList<String>();
 		String[] split = line.split(",");
 		// If any column has '?' we do not include it as a row
@@ -21,7 +23,7 @@ public class DataLineParser {
 		// If row not Title row
 		if (!split[26].equalsIgnoreCase("Agelaius_phoeniceus")) {
 			// Add Agelaius_phoeniceus
-			if (split[26] != "0")
+			if (!split[26].equalsIgnoreCase("0"))
 				result.add("1");
 			else
 				result.add(split[26]);
@@ -61,6 +63,9 @@ public class DataLineParser {
 				 	case 961:
 				 		split[i] = split[i].replaceAll("[^\\d.]", "");
 				 		break;
+				 	case 962:
+				 		split[i] = split[i].replaceAll("[^\\d.]", "");
+				 		break;
 			 		default:
 			 			break;
 				}
@@ -69,6 +74,11 @@ public class DataLineParser {
 				result.add(Integer.toString(columnNumber)+":"+split[i]);
 			}
 			if (hasQ == false){
+				// Add NLCD Data
+				/*for (int y = 968;y<=1015;y++){
+					columnNumber += 1;
+					result.add(Integer.toString(columnNumber)+":"+split[y]);
+				}*/
 				String r = StringUtils.join(" ", result);
 				return r;
 			}
