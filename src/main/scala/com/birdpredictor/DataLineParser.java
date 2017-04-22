@@ -13,7 +13,7 @@ public class DataLineParser {
 	
 	public static String get(String line){
 		//int[] indexes = {1,4,5,7,9,10,11,12,13,14,16,958,959,960,961,962,963,966,967};
-		int[] indexes = {1,9,10,11,12,13,14,960,961,963,966,967};
+		int[] indexes = {1,12,13,14,960,961,963,966,967};
 		
 		ArrayList<String> result = new ArrayList<String>();
 		String[] split = line.split(",");
@@ -39,7 +39,7 @@ public class DataLineParser {
 				 		break;
 				 	case 9:
 				 		if (State_Province.containsKey(split[i])){
-				 			split[i] = Long.toString(State_Province.get(split[i]));
+				 			split[i] = Long.toString(State_Province.get(split[i].trim()));
 				 		}
 				 		else {
 				 			state_province_counter += 1;
