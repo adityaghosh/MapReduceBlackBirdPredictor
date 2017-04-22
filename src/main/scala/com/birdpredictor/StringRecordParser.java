@@ -209,7 +209,7 @@ public class StringRecordParser {
 			sb.append(",9:" + countyVal);
 		}
 		if (!stateVal.equals("0") && !stateVal.equals("?") && stateVal.length()!=0) {
-			sb.append(",:10" + stateVal);
+			sb.append(",10:" + stateVal);
 		}
 		if (yearVal > 0) {
 			sb.append(",2:" + yearVal);
