@@ -51,7 +51,7 @@ object App {
     // Train a RandomForest model.
     // Empty categoricalFeaturesInfo indicates all features are continuous.
     val numClasses = 2
-    val categoricalFeaturesInfo = Map[Int, Int]((9, 49), (10, 1773))
+    val categoricalFeaturesInfo = Map[Int, Int]((11, 49), (12, 380))
     val numTrees = 4 // Use more in practice.
     val featureSubsetStrategy = "auto" // Let the algorithm choose.
     val impurity = "gini"

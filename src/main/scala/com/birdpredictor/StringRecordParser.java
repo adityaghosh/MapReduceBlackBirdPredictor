@@ -116,7 +116,16 @@ public class StringRecordParser {
 		if (!snow.trim().isEmpty() && !snow.contains("?") && !snow.contains("X")) {
 			sb.append(",957:" + snow);
 		}
-
+		
+		for (int j = 14; j < 20; j++) {
+			int count = 958;
+			String val = coreColums[j];
+			if(!val.trim().isEmpty() && !val.contains("?") && !val.contains("X")){
+				sb.append(",:"+String.valueOf(count) + val);
+				count+=1;
+			}
+		}
+		
 		return sb.toString().trim();
 	}
 
@@ -129,12 +138,16 @@ public class StringRecordParser {
 			return "";
 
 		Long yearVal = Long.parseLong(year);
+		
 		String month = checklistColums[5];
 		String day = checklistColums[6];
 		String time = checklistColums[7];
 		String state = checklistColums[9];
 		String county = checklistColums[10];
+		
+		String effort_area = checklistColums[14];
 
+		
 		String stateVal = !state.equals("?") ? getValFor(stateMap, state.trim(), stateCounter) : "?";
 		String countyVal = !county.equals("?") ? getValFor(countyMap, county.trim(), countyCounter) : "?";
 
@@ -166,7 +179,10 @@ public class StringRecordParser {
 
 		if (num_of_observers.equals("?"))
 			num_of_observers = "1";
-
+		
+		if (effort_area.equals("?")) {
+			effort_area = "";
+		}
 		String agelaius_phoeniceus = checklistColums[26];
 
 		Integer agelaius_phoeniceusVal = 0;
@@ -205,12 +221,7 @@ public class StringRecordParser {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(agelaius_phoeniceusVal);
-		if (!countyVal.equals("0") && !countyVal.equals("?") && countyVal.length()!=0) {
-			sb.append(",9:" + countyVal);
-		}
-		if (!stateVal.equals("0") && !stateVal.equals("?") && stateVal.length()!=0) {
-			sb.append(",10:" + stateVal);
-		}
+		
 		if (yearVal > 0) {
 			sb.append(",2:" + yearVal);
 		}
@@ -239,7 +250,15 @@ public class StringRecordParser {
 		if (Double.parseDouble(num_of_observers) > 0.0) {
 			sb.append(",9:" + num_of_observers);
 		}
-
+		if (effort_area.length()!=0) {
+			sb.append(",10:" + effort_area);
+		}
+		if (!countyVal.equals("0") && !countyVal.equals("?") && countyVal.length()!=0) {
+			sb.append(",11:" + countyVal);
+		}
+		if (!stateVal.equals("0") && !stateVal.equals("?") && stateVal.length()!=0) {
+			sb.append(",12:" + stateVal);
+		}
 		if (!speciesString.trim().isEmpty()) {
 			sb.append(",");
 			sb.append(speciesString);
