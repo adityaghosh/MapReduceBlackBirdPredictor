@@ -26,7 +26,8 @@ object App {
 
         val predata =  sc.textFile(input + "/")
                                 .map(line => StringRecordParser.get(line))
-                                .filter(line => line.length() != 0)
+                                .filter(line => line.length() != 0 || line.split(",").length > 30)
+                                
                                 
         predata.saveAsTextFile(output)
 
@@ -61,7 +62,7 @@ object App {
     
     val model = RandomForest.trainClassifier(training, numClasses, categoricalFeaturesInfo,
       numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins)
-
+//    val model = SVMWithSGD.train(training, numIterations)
     // Compute raw scores on the test set.
     val scoreAndLabels = test.map { point =>
       val score = model.predict(point.features)

@@ -57,32 +57,41 @@ public class StringRecordParser {
 
 		if (!distFromFlowingWater.trim().isEmpty() && !distFromFlowingWater.contains("?")
 				&& !distFromFlowingWater.contains("X")) {
-			sb.append(",958:" + distFromFlowingWater);
+			sb.append(",965:" + distFromFlowingWater);
 		}
 
 		if (!distInFlowingWater.trim().isEmpty() && !distInFlowingWater.contains("?")
 				&& !distInFlowingWater.contains("X")) {
-			sb.append(",959:" + distInFlowingWater);
+			sb.append(",966:" + distInFlowingWater);
 		}
 
 		if (!distFromStandingFresh.trim().isEmpty() && !distFromStandingFresh.contains("?")
 				&& !distFromStandingFresh.contains("X")) {
-			sb.append(",960:" + distFromStandingFresh);
+			sb.append(",967:" + distFromStandingFresh);
 		}
 
 		if (!distInStandingFresh.trim().isEmpty() && !distInStandingFresh.contains("?")
 				&& !distInStandingFresh.contains("X")) {
-			sb.append(",961:" + distInStandingFresh);
+			sb.append(",968:" + distInStandingFresh);
 		}
 
 		if (!distFromWetVeg.trim().isEmpty() && !distFromWetVeg.contains("?") && !distFromWetVeg.contains("X")) {
-			sb.append(",962:" + distFromWetVeg);
+			sb.append(",969:" + distFromWetVeg);
 		}
 
 		if (!distInWetVeg.trim().isEmpty() && !distInWetVeg.contains("?") && !distInWetVeg.contains("X")) {
-			sb.append(",963:" + distInWetVeg);
+			sb.append(",970:" + distInWetVeg);
 		}
-
+		
+		int count = 971;
+		for (int p = 3; p < 48; p++) {
+			
+			String val = extendedColums[p];
+			if(!val.trim().isEmpty() && !val.contains("?") && !val.contains("X")){
+				sb.append(","+String.valueOf(count)+":" + val);
+			}
+			count = count +1;
+		}
 		return sb.toString().trim();
 	}
 
@@ -116,16 +125,15 @@ public class StringRecordParser {
 		if (!snow.trim().isEmpty() && !snow.contains("?") && !snow.contains("X")) {
 			sb.append(",957:" + snow);
 		}
-		
+		int count = 958;
 		for (int j = 14; j < 20; j++) {
-			int count = 958;
+			
 			String val = coreColums[j];
-			if(!val.trim().isEmpty() && !val.contains("?") && !val.contains("X")){
-				sb.append(",:"+String.valueOf(count) + val);
-				count+=1;
+			if(!val.trim().isEmpty() && !val.contains("?") && !val.contains("X") && !val.equals("0")){
+				sb.append(","+String.valueOf(count)+":" + val);
 			}
+			count = count+1;
 		}
-		
 		return sb.toString().trim();
 	}
 
@@ -265,7 +273,6 @@ public class StringRecordParser {
 		}
 
 		return sb.toString();
-
 	}
 
 	private static String getValFor(HashMap<String, Long> myMap, String data, Long counter) {
