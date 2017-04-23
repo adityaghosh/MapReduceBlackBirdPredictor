@@ -1,7 +1,6 @@
 package com.birdpredictor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class PreprocessInput {
 				counter += 1;
 			}
 			if (sparseValues.size() <30){
-				String r = String.join(" ", sparseValues);
+				String r = StringUtils.join(" ", sparseValues);
 				return r;
 			}
 			return "";
