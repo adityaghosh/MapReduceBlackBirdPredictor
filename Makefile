@@ -3,9 +3,9 @@
 # Customize these paths for your environment.
 # -----------------------------------------------------------
 spark.root=/Users/rohitkumar/Downloads/softwares/spark-2.1.0
-jar.name=pageRankScala-0.1.jar
+jar.name=original-birdpredictor-1.0.0.jar
 jar.path=target/${jar.name}
-job.name=PageRankCom
+job.name=com.birdpredictor.App
 local.input=input
 local.output=output
 local.log=log
@@ -16,7 +16,7 @@ hdfs.output=output
 # AWS EMR Execution
 aws.emr.release=emr-5.2.1
 aws.region=us-west-2
-aws.bucket.name=rohitpagerank
+aws.bucket.name=mrhomework
 aws.subnet.id=subnet-6de8320a
 aws.input=input
 aws.output=output
@@ -38,7 +38,7 @@ clean-local-log:
 
 # Runs standalone
 alone: jar clean-local-output
-	${spark.root}/bin/spark-submit --class ${job.name} --master local[*] ${jar.path} ${local.input} ${local.output}
+	${spark.root}/bin/spark-submit --class ${job.name} --master local[*] ${jar.path} ${local.input} ${local.output} "local"
 
 
 # Create S3 bucket.
@@ -68,7 +68,7 @@ cloud: jar upload-app-aws delete-output-aws
 		--release-label ${aws.emr.release} \
 		--instance-groups '[{"InstanceCount":${aws.num.nodes},"InstanceGroupType":"CORE","InstanceType":"${aws.instance.type}"},{"InstanceCount":1,"InstanceGroupType":"MASTER","InstanceType":"${aws.instance.type}"}]' \
 	    --applications Name=Spark \
-	    --steps '[{"Name":"Spark Program", "Args":["--class", "${job.name}", "--master", "yarn", "--deploy-mode", "cluster", "s3://${aws.bucket.name}/${jar.name}", "s3://${aws.bucket.name}/${aws.input}","s3://${aws.bucket.name}/${aws.output}"],"Type":"Spark","Jar":"s3://${aws.bucket.name}/${jar.name}","ActionOnFailure":"TERMINATE_CLUSTER"}]' \
+	    --steps '[{"Name":"Spark Program", "Args":["--class", "${job.name}", "--master", "yarn", "--deploy-mode", "cluster", "s3://${aws.bucket.name}/${jar.name}", "s3://${aws.bucket.name}/${aws.input}","s3://${aws.bucket.name}/${aws.output}","cluster"],"Type":"Spark","Jar":"s3://${aws.bucket.name}/${jar.name}","ActionOnFailure":"TERMINATE_CLUSTER"}]' \
 		--log-uri s3://${aws.bucket.name}/${aws.log.dir} \
 		--service-role EMR_DefaultRole \
 		--ec2-attributes InstanceProfile=EMR_EC2_DefaultRole,SubnetId=${aws.subnet.id} \
