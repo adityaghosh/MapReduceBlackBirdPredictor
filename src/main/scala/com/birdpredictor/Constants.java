@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface Constants {
 
-	public final List<Integer> categoricalIndex = Arrays.asList(9, 10);
+	public final List<Integer> categoricalIndex = Arrays.asList(9,10);
 
-	public final List<Integer> continuousIndex = Arrays.asList(2, 3, 5, 6, 7, 26, 955, 956, 957, 958, 1096, 1098, 11,
+	public final List<Integer> continuousIndex = Arrays.asList(2, 3, 5, 6, 7, 955, 956, 957, 958, 1096, 1098, 11,
 			12, 13, 14, 15, 16, 960, 961, 962, 963, 964, 965, 966, 968, 969, 970, 971, 972, 973, 974, 975, 976, 977,
 			978, 979, 980, 981, 982, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 995, 996, 997, 998,
 			999, 1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016,
