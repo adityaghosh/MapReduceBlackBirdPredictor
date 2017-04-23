@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.hadoop.util.StringUtils;
+
 /**
  * 
  * @author rohitkumar
@@ -14,7 +15,8 @@ public class StringRecordParser {
 	private static HashMap<String, Long> countyMap = new HashMap<String, Long>();
 	private static long stateCounter = 0;
 	private static long countyCounter = 0;
-
+	private static String sampling_event_id = "";
+	
 	public static String get(String value) {
 		// int[] indexes =
 		// {1,4,5,7,9,10,11,12,13,14,16,958,959,960,961,962,963,966,967};
@@ -23,7 +25,7 @@ public class StringRecordParser {
 			return "";
 
 		String record = value.toString();
-		String sampling_event_id = record.substring(0, record.indexOf(","));
+		sampling_event_id = record.substring(0, record.indexOf(","));
 
 		String[] files = record.split(sampling_event_id);
 
@@ -82,16 +84,18 @@ public class StringRecordParser {
 		if (!distInWetVeg.trim().isEmpty() && !distInWetVeg.contains("?") && !distInWetVeg.contains("X")) {
 			sb.append(",970:" + distInWetVeg);
 		}
-		
+
 		int count = 971;
 		for (int p = 3; p < 48; p++) {
-			
+
 			String val = extendedColums[p];
-			if(!val.trim().isEmpty() && !val.contains("?") && !val.contains("X")){
-				sb.append(","+String.valueOf(count)+":" + val);
+			if (!val.trim().isEmpty() && !val.contains("?") && !val.contains("X")) {
+				sb.append("," + String.valueOf(count) + ":" + val);
 			}
-			count = count +1;
+			count = count + 1;
 		}
+		//adding sampling event-ID to the end of string so that we can retrieve it at the end
+		sb.append(","+count+":"+sampling_event_id.substring(1,sampling_event_id.length()-1));
 		return sb.toString().trim();
 	}
 
@@ -127,12 +131,12 @@ public class StringRecordParser {
 		}
 		int count = 958;
 		for (int j = 14; j < 20; j++) {
-			
+
 			String val = coreColums[j];
-			if(!val.trim().isEmpty() && !val.contains("?") && !val.contains("X") && !val.equals("0")){
-				sb.append(","+String.valueOf(count)+":" + val);
+			if (!val.trim().isEmpty() && !val.contains("?") && !val.contains("X") && !val.equals("0")) {
+				sb.append("," + String.valueOf(count) + ":" + val);
 			}
-			count = count+1;
+			count = count + 1;
 		}
 		return sb.toString().trim();
 	}
@@ -146,16 +150,15 @@ public class StringRecordParser {
 			return "";
 
 		Long yearVal = Long.parseLong(year);
-		
+
 		String month = checklistColums[5];
 		String day = checklistColums[6];
 		String time = checklistColums[7];
 		String state = checklistColums[9];
 		String county = checklistColums[10];
-		
+
 		String effort_area = checklistColums[14];
 
-		
 		String stateVal = !state.equals("?") ? getValFor(stateMap, state.trim(), stateCounter) : "?";
 		String countyVal = !county.equals("?") ? getValFor(countyMap, county.trim(), countyCounter) : "?";
 
@@ -187,7 +190,7 @@ public class StringRecordParser {
 
 		if (num_of_observers.equals("?"))
 			num_of_observers = "1";
-		
+
 		if (effort_area.equals("?")) {
 			effort_area = "";
 		}
@@ -229,7 +232,7 @@ public class StringRecordParser {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(agelaius_phoeniceusVal);
-		
+
 		if (yearVal > 0) {
 			sb.append(",2:" + yearVal);
 		}
@@ -258,13 +261,13 @@ public class StringRecordParser {
 		if (Double.parseDouble(num_of_observers) > 0.0) {
 			sb.append(",9:" + num_of_observers);
 		}
-		if (effort_area.length()!=0) {
+		if (effort_area.length() != 0) {
 			sb.append(",10:" + effort_area);
 		}
-		if (!countyVal.equals("0") && !countyVal.equals("?") && countyVal.length()!=0) {
+		if (!countyVal.equals("0") && !countyVal.equals("?") && countyVal.length() != 0) {
 			sb.append(",11:" + countyVal);
 		}
-		if (!stateVal.equals("0") && !stateVal.equals("?") && stateVal.length()!=0) {
+		if (!stateVal.equals("0") && !stateVal.equals("?") && stateVal.length() != 0) {
 			sb.append(",12:" + stateVal);
 		}
 		if (!speciesString.trim().isEmpty()) {

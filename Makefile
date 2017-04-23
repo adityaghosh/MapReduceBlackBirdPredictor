@@ -20,6 +20,10 @@ aws.bucket.name=mrhomework
 aws.subnet.id=subnet-6de8320a
 aws.input=input
 aws.output=output
+aws.inputunlabeled=unlabeled
+aws.outputunlabeled=ouputunlabeled
+aws.model=model
+aws.result=result
 aws.log.dir=log
 aws.num.nodes=10
 aws.instance.type=m4.large
@@ -62,13 +66,13 @@ upload-app-aws:
 	aws s3 cp ${jar.path} s3://${aws.bucket.name}
 
 # Main EMR launch.
-cloud: jar upload-app-aws delete-output-aws
+cloud: jar upload-app-aws
 	aws emr create-cluster \
 		--name "Scala Spark Cluster" \
 		--release-label ${aws.emr.release} \
 		--instance-groups '[{"InstanceCount":${aws.num.nodes},"InstanceGroupType":"CORE","InstanceType":"${aws.instance.type}"},{"InstanceCount":1,"InstanceGroupType":"MASTER","InstanceType":"${aws.instance.type}"}]' \
 	    --applications Name=Spark \
-	    --steps '[{"Name":"Spark Program", "Args":["--class", "${job.name}", "--master", "yarn", "--deploy-mode", "cluster", "s3://${aws.bucket.name}/${jar.name}", "s3://${aws.bucket.name}/${aws.input}","s3://${aws.bucket.name}/${aws.output}","cluster"],"Type":"Spark","Jar":"s3://${aws.bucket.name}/${jar.name}","ActionOnFailure":"TERMINATE_CLUSTER"}]' \
+	    --steps '[{"Name":"Spark Program", "Args":["--class", "${job.name}", "--master", "yarn", "--deploy-mode", "cluster", "s3://${aws.bucket.name}/${jar.name}", "s3://${aws.bucket.name}/${aws.input}","s3://${aws.bucket.name}/${aws.output}","s3://${aws.bucket.name}/${aws.inputunlabeled}","s3://${aws.bucket.name}/${aws.outputunlabeled}","s3://${aws.bucket.name}/${aws.model}","s3://${aws.bucket.name}/${aws.result}"],"Type":"Spark","Jar":"s3://${aws.bucket.name}/${jar.name}","ActionOnFailure":"TERMINATE_CLUSTER"}]' \
 		--log-uri s3://${aws.bucket.name}/${aws.log.dir} \
 		--service-role EMR_DefaultRole \
 		--ec2-attributes InstanceProfile=EMR_EC2_DefaultRole,SubnetId=${aws.subnet.id} \
