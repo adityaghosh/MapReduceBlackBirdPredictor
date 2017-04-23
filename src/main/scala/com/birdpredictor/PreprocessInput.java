@@ -1,4 +1,4 @@
-package com.birdpredictor
+package com.birdpredictor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
