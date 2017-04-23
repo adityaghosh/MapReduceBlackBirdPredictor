@@ -33,19 +33,23 @@ object App {
 
     val conf = new SparkConf()
 
-    //        var sc = new SparkContext("local[*]", "BirdPredictor", conf)
-    var sc = new SparkContext(conf)
+            var sc = new SparkContext("local[*]", "BirdPredictor", conf)
+//    var sc = new SparkContext(conf)
 
     val modelFileExists = new java.io.File(model).exists
     if (!modelFileExists) {
 
-//      var predata = sc.textFile(input + "/")
-//        .map(line => StringRecordParser.get(line))
-//        .filter(line => line.length() != 0 || line.split(",").length > 30)
-//      predata = predata.repartition(100)
-//      predata.saveAsTextFile(output)
+      //      var predata = sc.textFile(input + "/")
+      //        .map(line => StringRecordParser.get(line))
+      //        .filter(line => line.length() != 0 || line.split(",").length > 30)
 
-      // $example on$
+      var predata = sc.textFile(input + "/")
+        .map(line => PreprocessInput.preprocess(line, true, Constants.categoricalIndex, Constants.continuousIndex))
+        .filter(line => line.length() != 0)
+
+      predata = predata.repartition(100)
+      predata.saveAsTextFile(output)
+
       // Load training data in LIBSVM format.
 
       val data = MLUtils.loadLibSVMFile(sc, output)
@@ -58,7 +62,7 @@ object App {
 
       //This is using RandomForest. Setting up the parameters for the Random Forest algorithm
       val numClasses = 2 // binary classification
-      val categoricalFeaturesInfo = Map[Int, Int]((11, 49), (12, 380)) // features that are categorical and have been converted to continous 
+      val categoricalFeaturesInfo = Map[Int, Int]() // features that are categorical and have been converted to continous 
       val numTrees = 5 // Use more in practice. number of trees to spawn in the random Forest
       val featureSubsetStrategy = "auto" // Let the algorithm choose.
       val subsamplingrate = 0.40 //defines the sub sample percentage of data used for training a decision tree in the randomForest
