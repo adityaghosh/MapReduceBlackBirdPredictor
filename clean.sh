@@ -1,15 +1,8 @@
 #!/bin/bash
-
-declare -i cnt=0
-
-while [ $cnt -lt 13 ]
-do
-if  [ $cnt -lt 10 ] 
-then
-cat "part-0000"$cnt >> clean.csv
-else
-cat "part-000"$cnt >> clean.csv
-fi
-cnt=$cnt+1
+echo "SAMPLING_EVENT_ID,SAW_AGELAIUS_PHOENICEUS">>PredictedData.csv
+cat PredictedData.csv
+for filename in result/*; do
+cat $filename >> PredictedData.csv
 done
+
 
