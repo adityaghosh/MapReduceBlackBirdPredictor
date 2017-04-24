@@ -33,19 +33,19 @@ object App {
 
     val conf = new SparkConf()
 
-            var sc = new SparkContext("local[*]", "BirdPredictor", conf)
-//    var sc = new SparkContext(conf)
+    //    var sc = new SparkContext("local[*]", "BirdPredictor", conf)
+    var sc = new SparkContext(conf)
 
     val modelFileExists = new java.io.File(model).exists
     if (!modelFileExists) {
 
-      //      var predata = sc.textFile(input + "/")
-      //        .map(line => StringRecordParser.get(line))
-      //        .filter(line => line.length() != 0 || line.split(",").length > 30)
-
       var predata = sc.textFile(input + "/")
-        .map(line => PreprocessInput.preprocess(line, true, Constants.categoricalIndex, Constants.continuousIndex))
-        .filter(line => line.length() != 0)
+        .map(line => StringRecordParser.get(line))
+        .filter(line => line.length() != 0 || line.split(",").length > 30)
+
+      //      var predata = sc.textFile(input + "/")
+      //        .map(line => PreprocessInput.preprocess(line, true, Constants.categoricalIndex, Constants.continuousIndex))
+      //        .filter(line => line.length() != 0)
 
       predata = predata.repartition(100)
       predata.saveAsTextFile(output)
@@ -131,18 +131,17 @@ object App {
     //First String value contains the Input record ID and second String contains the processed input record
     var unLableddata = sc.textFile(inputunlabeled + "/")
       .map(line => (StringRecordParser.get(line)))
-      .filter(pairline => pairline.length() != 0 || pairline.split(",").length > 30).persist()
-
-    //    val unLableddataRDD = unLableddata.map(data => data._2) 
+      .filter(pairline => pairline.length() != 0 || pairline.split(",").length > 30)
+ 
     unLableddata.saveAsTextFile(outputunlabeled)
 
     val unlabeledPointData = MLUtils.loadLibSVMFile(sc, outputunlabeled)
 
     val finalResult = unlabeledPointData.map { point =>
       val score = sameModel.predict(point.features)
+      println(point.features.toArray(point.features.size - 1) + ":: score :: " + score)
       (point.features.toArray(point.features.size - 1), score)
-    }
-    finalResult.map(fr => "R" + fr._1.toString().split(".")(0) + "," + fr._2.toString()).saveAsTextFile(result)
+    }.map(fr => "S" + fr._1.toString() + "," + fr._2.toString()).saveAsTextFile(result)
 
     sc.stop()
   }
