@@ -38,14 +38,11 @@ object App {
 
     val modelFileExists = new java.io.File(model).exists
     if (!modelFileExists) {
-
+      
+    //using the parser to clean the data and use only columns that are required to train the model
       var predata = sc.textFile(input + "/")
         .map(line => StringRecordParser.get(line))
         .filter(line => line.length() != 0 || line.split(",").length > 30)
-
-      //      var predata = sc.textFile(input + "/")
-      //        .map(line => PreprocessInput.preprocess(line, true, Constants.categoricalIndex, Constants.continuousIndex))
-      //        .filter(line => line.length() != 0)
 
       predata = predata.repartition(100)
       predata.saveAsTextFile(output)
@@ -132,7 +129,7 @@ object App {
     var unLableddata = sc.textFile(inputunlabeled + "/")
       .map(line => (StringRecordParser.get(line)))
       .filter(pairline => pairline.length() != 0 || pairline.split(",").length > 30)
- 
+
     unLableddata.saveAsTextFile(outputunlabeled)
 
     val unlabeledPointData = MLUtils.loadLibSVMFile(sc, outputunlabeled)
